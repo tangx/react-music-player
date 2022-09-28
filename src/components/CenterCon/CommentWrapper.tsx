@@ -1,5 +1,5 @@
 import React from 'react'
-import line from './line.png'
+import line from '../../images/line.png'
 export default function CommentWrapper() {
   return (
     <div className='comment_wrapper'>

@@ -1,5 +1,5 @@
 import React from 'react'
-import line from './line.png'
+import line from '../../images/line.png'
 import { Song } from '../types/Song.types'
 
 interface SongWrapperProps {

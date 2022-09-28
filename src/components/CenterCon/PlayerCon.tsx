@@ -1,5 +1,5 @@
 import React from 'react'
-import player_bar from './player_bar.png'
+import player_bar from '../../images/player_bar.png'
 import disc from '../../images/disc.png'
 export default function PlayerCon() {
   return (
