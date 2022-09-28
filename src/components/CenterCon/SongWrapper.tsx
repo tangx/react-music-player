@@ -1,7 +1,11 @@
 import React from 'react'
 import line from './line.png'
+import { Song } from '../types/Song.types'
 
-export default function SongWrapper() {
+interface SongWrapperProps {
+  songs: Song[]
+}
+export default function SongWrapper(props: SongWrapperProps) {
   return (
     <div className='song_wrapper'>
       <ul className='song_list'>
