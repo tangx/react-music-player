@@ -21,7 +21,7 @@ export default function SongWrapper(props: SongWrapperProps) {
           songs.map((song) => {
             return (
               <li key={song.id} >
-                <a href=""
+                <a href="#"
                   onClick={() => { props.getMusic(song.id) }}
                 ></a>
                 <b>{song.name}</b>

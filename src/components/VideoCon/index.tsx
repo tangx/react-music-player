@@ -9,7 +9,7 @@ interface VideoConProps {
 export default function VideoCon(props: VideoConProps) {
   const { mvState } = props
 
-  console.log("mvState in VideoCon: ", mvState);
+  // console.log("mvState in VideoCon: ", mvState);
 
   if (mvState.isMasked) {
     return (
