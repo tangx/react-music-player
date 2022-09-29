@@ -2,6 +2,7 @@
 export type Song = {
   id: number,
   name: string,
+  mvid: number,
 }
 
 

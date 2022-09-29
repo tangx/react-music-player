@@ -47,7 +47,7 @@ export default function Player() {
     axios.get<RespData>(target)
       .then(
         (resp) => {
-          // console.log("==>", resp.data);
+          console.log("==>", resp.data);
           // console.log("@@=>", resp.data.result.songs);
           // songs = resp.data.result.songs
           setSongs(resp.data.result.songs)
@@ -126,6 +126,28 @@ export default function Player() {
     setIsPlaying(false)
   }
 
+
+  interface GetMVRespData {
+    code: number
+    data: {
+      url: string
+      id: number
+    }
+  }
+
+  //播放mv
+  function playMV(mvid: number) {
+    axios.get<GetMVRespData>(`https://autumnfish.cn/mv/url?id=${mvid}`)
+      .then(
+        (resp) => {
+          console.log(resp.data.data.url);
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+  }
+
   return (
     <div className='wrap'>
       <div className="play_wrap" id="player">
@@ -134,6 +156,7 @@ export default function Player() {
           picURL={picURL}
           hotComments={hotComments}
           isPlaying={isPlaying}
+          playMV={playMV}
         />
         <AudioCon musicURL={musicURL}
           handlePlay={handlePlay}

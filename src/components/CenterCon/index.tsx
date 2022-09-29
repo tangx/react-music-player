@@ -11,13 +11,17 @@ interface CenterConProps {
   picURL: string
   hotComments: HotComment[]
   isPlaying: boolean
+  playMV: (mvid: number) => void
 }
 export default function CenterCon(props: CenterConProps) {
   // console.log("center===>", props.songs);
 
   return (
     <div className='center_con'>
-      <SongWrapper songs={props.songs} getMusic={props.getMusic} />
+      <SongWrapper songs={props.songs}
+        getMusic={props.getMusic}
+        playMV={props.playMV}
+      />
       <PlayerCon picURL={props.picURL}
         isPlaying={props.isPlaying} />
       <CommentWrapper hotComments={props.hotComments} />
