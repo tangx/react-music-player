@@ -38,6 +38,7 @@ export default function Player() {
   const [musicURL, setMusicURL] = useState<string>("")
   const [picURL, setPicURL] = useState<string>("")
   const [hotComments, setHotComments] = useState<HotComment[]>([])
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
 
   function searchMusic(name: string) {
@@ -118,6 +119,13 @@ export default function Player() {
       )
   }
 
+  function handlePlay() {
+    setIsPlaying(true)
+  }
+  function handlePause() {
+    setIsPlaying(false)
+  }
+
   return (
     <div className='wrap'>
       <div className="play_wrap" id="player">
@@ -125,8 +133,13 @@ export default function Player() {
         <CenterCon songs={songs} getMusic={getMusic}
           picURL={picURL}
           hotComments={hotComments}
+          isPlaying={isPlaying}
         />
-        <AudioCon musicURL={musicURL} />
+        <AudioCon musicURL={musicURL}
+          handlePlay={handlePlay}
+          handlePause={handlePause}
+        />
+
         {/* <VideoCon /> */}
       </div>
     </div>
