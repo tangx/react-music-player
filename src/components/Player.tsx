@@ -8,6 +8,7 @@ import VideoCon from './VideoCon'
 import { Song, Music, MusicDetail } from './types/Song.types'
 
 import { HotComment } from './types/HotComment.types'
+import { MvState } from './types/MV.types'
 
 interface RespData {
   code: number
@@ -33,12 +34,14 @@ interface HotCommentRespData {
   total: number
 }
 
+
 export default function Player() {
   const [songs, setSongs] = useState<Song[]>([])
   const [musicURL, setMusicURL] = useState<string>("")
   const [picURL, setPicURL] = useState<string>("")
   const [hotComments, setHotComments] = useState<HotComment[]>([])
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  const [mvState, setMvState] = useState<MvState>({ url: "", isMasked: false })
 
 
   function searchMusic(name: string) {
@@ -140,12 +143,19 @@ export default function Player() {
     axios.get<GetMVRespData>(`https://autumnfish.cn/mv/url?id=${mvid}`)
       .then(
         (resp) => {
-          console.log(resp.data.data.url);
+          const { data } = resp.data
+          console.log(data.url);
+
+          setMvState({ url: data.url, isMasked: true })
         },
         (err) => {
           console.log(err);
         }
       )
+  }
+
+  function exitMV() {
+    setMvState({ ...mvState, isMasked: false })
   }
 
   return (
@@ -163,7 +173,9 @@ export default function Player() {
           handlePause={handlePause}
         />
 
-        {/* <VideoCon /> */}
+        <VideoCon mvState={mvState}
+          exitMV={exitMV}
+        />
       </div>
     </div>
   )
