@@ -4,8 +4,12 @@ export type Song = {
   name: string,
 }
 
-type Artist = {
-  img1v1Url: string
-  name: string
-}
 
+
+export type Music = {
+  id: number
+  url: string
+  md5: string
+  time: number
+  size: number
+}

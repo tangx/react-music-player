@@ -1,10 +1,39 @@
 import React from 'react'
 import line from '../../images/line.png'
-import { Song } from '../types/Song.types'
+import { Song, Music } from '../types/Song.types'
+import axios from 'axios'
 
 interface SongWrapperProps {
   songs: Song[]
 }
+
+interface MusicRespData {
+  code: number
+  data: Music[]
+}
+
+function playMusic(id: number) {
+  // console.log("music id", id);
+
+  const target = `https://autumnfish.cn/song/url?id=${id}`
+
+  axios.get<MusicRespData>(target)
+    .then(
+      (resp) => {
+        const { data } = resp.data
+        if (data.length > 0) {
+          console.log(resp.data.data[0]);
+          return
+        }
+
+        console.log("music not found");
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+}
+
 export default function SongWrapper(props: SongWrapperProps) {
   const { songs } = props
   return (
@@ -13,8 +42,10 @@ export default function SongWrapper(props: SongWrapperProps) {
         {
           songs.map((song) => {
             return (
-              <li key={song.id}>
-                <a href=""></a>
+              <li key={song.id} >
+                <a href="javascript:;"
+                  onClick={() => { playMusic(song.id) }}
+                ></a>
                 <b>{song.name}</b>
                 <span>
                   <i></i>
