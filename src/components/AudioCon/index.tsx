@@ -5,7 +5,7 @@ interface AudioConProps {
 }
 
 export default function AudioCon(props: AudioConProps) {
-  console.log(props);
+  // console.log(props);
 
   return (
     <div className='audio_con'>

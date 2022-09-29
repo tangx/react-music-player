@@ -1,11 +1,13 @@
+import axios from 'axios'
+
 import React, { useState } from 'react'
 import AudioCon from './AudioCon'
 import CenterCon from './CenterCon'
 import SearchBar from './SearchBar'
 import VideoCon from './VideoCon'
 import { Song, Music, MusicDetail } from './types/Song.types'
-// import { RespData } from './scripts/SearchMusic'
-import axios from 'axios'
+
+import { HotComment } from './types/HotComment.types'
 
 interface RespData {
   code: number
@@ -25,11 +27,17 @@ interface GetMusicDetailRespData {
   songs: MusicDetail[]
 }
 
+interface HotCommentRespData {
+  code: 200
+  hotComments: HotComment[]
+  total: number
+}
 
 export default function Player() {
-  const [songs, setSongs] = useState<Song[]>([] as Song[])
+  const [songs, setSongs] = useState<Song[]>([])
   const [musicURL, setMusicURL] = useState<string>("")
   const [picURL, setPicURL] = useState<string>("")
+  const [hotComments, setHotComments] = useState<HotComment[]>([])
 
 
   function searchMusic(name: string) {
@@ -54,7 +62,7 @@ export default function Player() {
     // console.log("music target =>", target);
 
 
-
+    // 获取播放地址
     axios.get<GetMusicRespData>(target)
       .then(
         (resp) => {
@@ -74,7 +82,7 @@ export default function Player() {
         }
       )
 
-
+    // 获取专辑图片
     axios.get<GetMusicDetailRespData>(`https://autumnfish.cn/song/detail?ids=${id}`)
       .then(
         (resp) => {
@@ -95,14 +103,29 @@ export default function Player() {
         }
       )
 
+    // 获取评论
+    axios.get<HotCommentRespData>(`https://autumnfish.cn/comment/hot?type=0&id=${id}`)
+      .then(
+        (resp) => {
+          // console.log(resp.data.hotComments);
 
+          setHotComments(resp.data.hotComments);
+
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
   }
 
   return (
     <div className='wrap'>
       <div className="play_wrap" id="player">
         <SearchBar searchMusic={searchMusic} />
-        <CenterCon songs={songs} getMusic={getMusic} picURL={picURL} />
+        <CenterCon songs={songs} getMusic={getMusic}
+          picURL={picURL}
+          hotComments={hotComments}
+        />
         <AudioCon musicURL={musicURL} />
         {/* <VideoCon /> */}
       </div>
