@@ -3,7 +3,7 @@ import AudioCon from './AudioCon'
 import CenterCon from './CenterCon'
 import SearchBar from './SearchBar'
 import VideoCon from './VideoCon'
-import { Song, Music } from './types/Song.types'
+import { Song, Music, MusicDetail } from './types/Song.types'
 // import { RespData } from './scripts/SearchMusic'
 import axios from 'axios'
 
@@ -20,10 +20,17 @@ interface GetMusicRespData {
   code: number
   data: Music[]
 }
+interface GetMusicDetailRespData {
+  code: number
+  songs: MusicDetail[]
+}
+
 
 export default function Player() {
   const [songs, setSongs] = useState<Song[]>([] as Song[])
   const [musicURL, setMusicURL] = useState<string>("")
+  const [picURL, setPicURL] = useState<string>("")
+
 
   function searchMusic(name: string) {
     const target = `https://autumnfish.cn/search?keywords=${name}`
@@ -47,6 +54,7 @@ export default function Player() {
     // console.log("music target =>", target);
 
 
+
     axios.get<GetMusicRespData>(target)
       .then(
         (resp) => {
@@ -65,13 +73,36 @@ export default function Player() {
           console.log(err);
         }
       )
+
+
+    axios.get<GetMusicDetailRespData>(`https://autumnfish.cn/song/detail?ids=${id}`)
+      .then(
+        (resp) => {
+          // console.log(resp.data);
+          const { songs } = resp.data
+          if (songs.length < 1) {
+            console.log("music detail not found");
+            return
+          }
+
+          const detail = songs[0]
+          // console.log(detail.al.picUrl);
+          setPicURL(detail.al.picUrl)
+
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+
+
   }
 
   return (
     <div className='wrap'>
       <div className="play_wrap" id="player">
         <SearchBar searchMusic={searchMusic} />
-        <CenterCon songs={songs} getMusic={getMusic} />
+        <CenterCon songs={songs} getMusic={getMusic} picURL={picURL} />
         <AudioCon musicURL={musicURL} />
         {/* <VideoCon /> */}
       </div>

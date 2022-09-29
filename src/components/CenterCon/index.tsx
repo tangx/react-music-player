@@ -7,6 +7,7 @@ import { Song } from '../types/Song.types'
 interface CenterConProps {
   songs: Song[]
   getMusic: (id: number) => void
+  picURL: string
 }
 export default function CenterCon(props: CenterConProps) {
   // console.log("center===>", props.songs);
@@ -14,7 +15,7 @@ export default function CenterCon(props: CenterConProps) {
   return (
     <div className='center_con'>
       <SongWrapper songs={props.songs} getMusic={props.getMusic} />
-      <PlayerCon />
+      <PlayerCon picURL={props.picURL} />
       <CommentWrapper />
     </div>
   )

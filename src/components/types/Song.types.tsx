@@ -13,3 +13,15 @@ export type Music = {
   time: number
   size: number
 }
+
+
+export type MusicDetail = {
+  name: string
+  al: {
+    id: number
+    pic: number
+    name: string
+    picUrl: string
+  }
+
+}

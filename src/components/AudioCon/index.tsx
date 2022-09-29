@@ -5,6 +5,8 @@ interface AudioConProps {
 }
 
 export default function AudioCon(props: AudioConProps) {
+  console.log(props);
+
   return (
     <div className='audio_con'>
       <audio src={props.musicURL} className='myaudio'
