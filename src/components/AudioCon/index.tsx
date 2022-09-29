@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function AudioCon() {
+interface AudioConProps {
+  musicURL: string
+}
+
+export default function AudioCon(props: AudioConProps) {
   return (
     <div className='audio_con'>
       <audio src="" className='myaudio'></audio>
