@@ -7,7 +7,9 @@ interface AudioConProps {
 export default function AudioCon(props: AudioConProps) {
   return (
     <div className='audio_con'>
-      <audio src="" className='myaudio'></audio>
+      <audio src={props.musicURL} className='myaudio'
+        controls loop autoPlay
+      ></audio>
     </div>
   )
 }
