@@ -27,7 +27,6 @@ interface HotCommentRespData {
 
 
 export default function Player() {
-  const [songs, setSongs] = useState<Song[]>([])
   const [musicURL, setMusicURL] = useState<string>("")
   const [picURL, setPicURL] = useState<string>("")
   const [hotComments, setHotComments] = useState<HotComment[]>([])
@@ -138,12 +137,13 @@ export default function Player() {
       <div className="play_wrap" id="player">
         <h1>Redux music player</h1>
         <SearchBar />
-        {/* <CenterCon songs={songs} getMusic={getMusic}
+        <CenterCon
+          getMusic={getMusic}
           picURL={picURL}
           hotComments={hotComments}
           isPlaying={isPlaying}
           playMV={playMV}
-        /> */}
+        />
         {/* <AudioCon musicURL={musicURL}
           handlePlay={handlePlay}
           handlePause={handlePause}

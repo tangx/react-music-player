@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react'
+import { useSelector } from 'react-redux'
 import line from '../../images/line.png'
-import { Song, Music } from '../types/Song.types'
-import axios from 'axios'
+import { RootState } from '../../redux/store'
+
 
 interface SongWrapperProps {
-  songs: Song[]
+  // songs: Song[]
   getMusic: (id: number) => void
   playMV: (id: number) => void
 }
@@ -13,7 +14,10 @@ interface SongWrapperProps {
 
 
 export default function SongWrapper(props: SongWrapperProps) {
-  const { songs } = props
+
+  const songs = useSelector((state: RootState) => { return state.songs })
+
+
   return (
     <div className='song_wrapper'>
       <ul className='song_list'>

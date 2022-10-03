@@ -38,7 +38,7 @@ export default function SearchBar(props: SearchBarProps) {
           const songs = resp.data.result.songs
 
           dispatch(updateSongs(songs))
-          console.log(songs);
+          // console.log(songs);
 
         },
         (err) => {
