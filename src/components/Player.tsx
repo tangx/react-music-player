@@ -10,15 +10,6 @@ import { Song, Music, MusicDetail } from './types/Song.types'
 import { HotComment } from './types/HotComment.types'
 import { MvState } from './types/MV.types'
 
-interface RespData {
-  code: number
-  result: {
-    hasMore: boolean
-    songCount: number
-    songs: Song[]
-  }
-}
-
 interface GetMusicRespData {
   code: number
   data: Music[]
@@ -44,22 +35,6 @@ export default function Player() {
   const [mvState, setMvState] = useState<MvState>({ url: "", isMasked: false })
 
 
-  function searchMusic(name: string) {
-    const target = `https://autumnfish.cn/search?keywords=${name}`
-
-    axios.get<RespData>(target)
-      .then(
-        (resp) => {
-          console.log("==>", resp.data);
-          // console.log("@@=>", resp.data.result.songs);
-          // songs = resp.data.result.songs
-          setSongs(resp.data.result.songs)
-        },
-        (err) => {
-          console.log(err);
-        }
-      )
-  }
 
   function getMusic(id: number) {
     const target = `https://autumnfish.cn/song/url?id=${id}`
@@ -161,21 +136,22 @@ export default function Player() {
   return (
     <div className='wrap'>
       <div className="play_wrap" id="player">
-        <SearchBar searchMusic={searchMusic} />
-        <CenterCon songs={songs} getMusic={getMusic}
+        <h1>Redux music player</h1>
+        <SearchBar />
+        {/* <CenterCon songs={songs} getMusic={getMusic}
           picURL={picURL}
           hotComments={hotComments}
           isPlaying={isPlaying}
           playMV={playMV}
-        />
-        <AudioCon musicURL={musicURL}
+        /> */}
+        {/* <AudioCon musicURL={musicURL}
           handlePlay={handlePlay}
           handlePause={handlePause}
-        />
+        /> */}
 
-        <VideoCon mvState={mvState}
+        {/* <VideoCon mvState={mvState}
           exitMV={exitMV}
-        />
+        /> */}
       </div>
     </div>
   )
