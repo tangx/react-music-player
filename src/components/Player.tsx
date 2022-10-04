@@ -12,21 +12,8 @@ import { MvState } from './types/MV.types'
 
 
 export default function Player() {
-  const [musicURL, setMusicURL] = useState<string>("")
-  const [picURL, setPicURL] = useState<string>("")
   const [hotComments, setHotComments] = useState<HotComment[]>([])
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [mvState, setMvState] = useState<MvState>({ url: "", isMasked: false })
-
-
-
-  function handlePlay() {
-    setIsPlaying(true)
-  }
-  function handlePause() {
-    setIsPlaying(false)
-  }
-
 
   interface GetMVRespData {
     code: number
@@ -62,10 +49,7 @@ export default function Player() {
         <h1>Redux music player</h1>
         <SearchBar />
         <CenterCon
-          // getMusic={getMusic}
-          picURL={picURL}
           hotComments={hotComments}
-          isPlaying={isPlaying}
           playMV={playMV}
         />
         <AudioCon />
