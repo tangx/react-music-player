@@ -6,6 +6,7 @@ import axios from 'axios'
 import { SongDetail, SongCover, Music } from '../types/Song.types'
 import { HotComment } from '../types/HotComment.types'
 import { updateMusic } from '../../redux/actions/music'
+import { updateComments } from '../../redux/actions/comments'
 
 interface SongWrapperProps {
   // songs: Song[]
@@ -87,21 +88,24 @@ interface HotCommentRespData {
   total: number
 }
 
-// function getComment(id: number) {
-//   // 获取评论
-//   axios.get<HotCommentRespData>(`https://autumnfish.cn/comment/hot?type=0&id=${id}`)
-//     .then(
-//       (resp) => {
-//         // console.log(resp.data.hotComments);
+function getComments(id: number) {
+  // 获取评论
+  return axios.get<HotCommentRespData>(`https://autumnfish.cn/comment/hot?type=0&id=${id}`)
+    .then(
+      (resp) => {
+        if (resp.data.code != 200) {
+          return [] as HotComment[]
+        }
+        // console.log(resp.data.hotComments);
+        return resp.data.hotComments
 
-//         // setHotComments(resp.data.hotComments);
-
-//       },
-//       (err) => {
-//         console.log(err);
-//       }
-//     )
-// }
+      },
+      (err) => {
+        console.log(err);
+        return [] as HotComment[]
+      }
+    )
+}
 
 export default function SongWrapper(props: SongWrapperProps) {
 
@@ -110,20 +114,22 @@ export default function SongWrapper(props: SongWrapperProps) {
   const songs = useSelector((state: RootState) => { return state.songs })
 
 
-  async function getMusic(id: number) {
-    // 获取播放地址
-    const musicURL = await getMusicURL(id)
-    // console.log("musicURL=>", musicURL);
 
+  async function getMusic(id: number) {
+    /* 获取音乐信息， 播放地址和封面地址 */
+    const musicURL = await getMusicURL(id)
     const coverURL = await getCoverURL(id)
-    // console.log("coverURL===>", coverURL);
 
     const music: Music = {
       coverURL: coverURL!,
       musicURL: musicURL!,
     }
-
     dispatch(updateMusic(music))
+
+    /* 获取音乐信息， 评论信息 */
+    const comments = await getComments(id)
+    dispatch(updateComments(comments))
+
   }
 
 

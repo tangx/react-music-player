@@ -1,18 +1,20 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import line from '../../images/line.png'
+import { RootState } from '../../redux/store'
 import { HotComment } from '../types/HotComment.types'
 
 
 interface CommentWrapperProps {
-  hotComments: HotComment[]
 }
 export default function CommentWrapper(props: CommentWrapperProps) {
+  const comments = useSelector((state: RootState) => { return state.comments })
   return (
     <div className='comment_wrapper'>
       <h5 className='title'>热门留言</h5>
       <div className="comment_list">
         {
-          props.hotComments.map(
+          comments.map(
             (cmt) => {
               // console.log("cmt==>", cmt);
 
