@@ -68,10 +68,7 @@ export default function Player() {
           isPlaying={isPlaying}
           playMV={playMV}
         />
-        {/* <AudioCon musicURL={musicURL}
-          handlePlay={handlePlay}
-          handlePause={handlePause}
-        /> */}
+        <AudioCon />
 
         {/* <VideoCon mvState={mvState}
           exitMV={exitMV}
