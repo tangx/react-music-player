@@ -8,15 +8,12 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 
 interface CenterConProps {
-  playMV: (mvid: number) => void
 }
 export default function CenterCon(props: CenterConProps) {
 
   return (
     <div className='center_con'>
-      <SongWrapper
-        playMV={props.playMV}
-      />
+      <SongWrapper />
       <PlayerCon />
       <CommentWrapper />
     </div>

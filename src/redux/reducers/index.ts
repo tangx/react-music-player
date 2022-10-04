@@ -5,6 +5,7 @@ import songs from './songs'
 import music from './music'
 import playing from './playing'
 import comments from './comments'
+import mv from './mv'
 
 const reducers = combineReducers(
   {
@@ -12,6 +13,7 @@ const reducers = combineReducers(
     music,
     playing,
     comments,
+    mv,
   }
 )
 export default reducers

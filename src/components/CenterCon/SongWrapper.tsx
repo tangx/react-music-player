@@ -7,21 +7,19 @@ import { SongDetail, SongCover, Music } from '../types/Song.types'
 import { HotComment } from '../types/HotComment.types'
 import { updateMusic } from '../../redux/actions/music'
 import { updateComments } from '../../redux/actions/comments'
+import { setMVState } from '../../redux/actions/mv'
+import { MvState } from '../types/MV.types'
 
 interface SongWrapperProps {
   // songs: Song[]
   // getMusic: (id: number) => void
-  playMV: (id: number) => void
+  // playMV: (id: number) => void
 }
-
-
 
 interface SongDetailRespData {
   code: number
   data: SongDetail[]
 }
-
-
 
 function getMusicURL(id: number) {
 
@@ -49,12 +47,10 @@ function getMusicURL(id: number) {
     )
 }
 
-
 interface GetSongCoverRespData {
   code: number
   songs: SongCover[]
 }
-
 
 function getCoverURL(id: number) {
   return axios.get<GetSongCoverRespData>(`https://autumnfish.cn/song/detail?ids=${id}`)
@@ -79,8 +75,6 @@ function getCoverURL(id: number) {
       }
     )
 }
-
-
 
 interface HotCommentRespData {
   code: 200
@@ -107,15 +101,40 @@ function getComments(id: number) {
     )
 }
 
+
+
+interface GetMVRespData {
+  code: number
+  data: {
+    url: string
+    id: number
+  }
+}
+
+//播放mv
+function playMV(mvid: number): Promise<MvState | undefined> {
+  return axios.get<GetMVRespData>(`https://autumnfish.cn/mv/url?id=${mvid}`)
+    .then(
+      (resp) => {
+        const { data } = resp.data
+        console.log(data.url);
+
+        return { url: data.url, isMasked: true }
+      },
+      (err) => {
+        console.log(err);
+        return undefined
+      }
+    )
+}
+
 export default function SongWrapper(props: SongWrapperProps) {
 
   const dispatch = useDispatch()
 
   const songs = useSelector((state: RootState) => { return state.songs })
 
-
-
-  async function getMusic(id: number) {
+  async function handleMusic(id: number) {
     /* 获取音乐信息， 播放地址和封面地址 */
     const musicURL = await getMusicURL(id)
     const coverURL = await getCoverURL(id)
@@ -129,9 +148,7 @@ export default function SongWrapper(props: SongWrapperProps) {
     /* 获取音乐信息， 评论信息 */
     const comments = await getComments(id)
     dispatch(updateComments(comments))
-
   }
-
 
   return (
     <div className='song_wrapper'>
@@ -141,11 +158,11 @@ export default function SongWrapper(props: SongWrapperProps) {
             return (
               <li key={song.id} >
                 <a href="#"
-                  onClick={() => { getMusic(song.id) }}
+                  onClick={() => { handleMusic(song.id) }}
                 ></a>
                 <b>{song.name}</b>
 
-                <MvSpan mvid={song.mvid} playMV={props.playMV} />
+                <MvSpan mvid={song.mvid} />
               </li>
             )
           })
@@ -158,13 +175,23 @@ export default function SongWrapper(props: SongWrapperProps) {
 
 interface MvSpanProps {
   mvid: number
-  playMV: (id: number) => void
+  // playMV: (id: number) => void
 }
 
 export function MvSpan(props: MvSpanProps) {
+
+  const dispatch = useDispatch()
+  async function handlePlayMV(id: number) {
+
+    const mv = await playMV(id)
+    if (mv) {
+      dispatch(setMVState(mv))
+    }
+  }
+
   if (props.mvid !== 0) {
     return (
-      <span onClick={() => { props.playMV(props.mvid) }}>
+      <span onClick={() => { handlePlayMV(props.mvid) }}>
         <i></i>
       </span>
     )

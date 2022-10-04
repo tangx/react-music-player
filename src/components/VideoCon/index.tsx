@@ -1,21 +1,35 @@
 import React, { Fragment } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setMVState } from '../../redux/actions/mv'
+import { RootState } from '../../redux/store'
 import { MvState } from '../types/MV.types'
 
 interface VideoConProps {
-  mvState: MvState
-  exitMV: () => void
 }
 
+
 export default function VideoCon(props: VideoConProps) {
-  const { mvState } = props
 
-  // console.log("mvState in VideoCon: ", mvState);
+  const dispatch = useDispatch()
+  const mvState = useSelector((state: RootState) => {
+    return state.mv
+  })
 
-  if (mvState.isMasked) {
+
+  function exitPlayingMv() {
+    dispatch(
+      setMVState(
+        { url: "", isMasked: false }
+      )
+    )
+  }
+
+
+  if (mvState && mvState.isMasked) {
     return (
       <div className='video_con'>
         <video src={mvState.url} controls={true}></video>
-        <div className='mask' onClick={props.exitMV}></div>
+        <div className='mask' onClick={exitPlayingMv}></div>
       </div>
     )
   }
