@@ -11,9 +11,6 @@ import { setMVState } from '../../redux/actions/mv'
 import { MvState } from '../types/MV.types'
 
 interface SongWrapperProps {
-  // songs: Song[]
-  // getMusic: (id: number) => void
-  // playMV: (id: number) => void
 }
 
 interface SongDetailRespData {
@@ -175,7 +172,6 @@ export default function SongWrapper(props: SongWrapperProps) {
 
 interface MvSpanProps {
   mvid: number
-  // playMV: (id: number) => void
 }
 
 export function MvSpan(props: MvSpanProps) {

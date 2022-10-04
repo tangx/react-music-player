@@ -1,6 +1,5 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import music from '../../redux/reducers/music'
 import { RootState } from '../../redux/store'
 import { setPlayingState } from '../../redux/actions/playing'
 

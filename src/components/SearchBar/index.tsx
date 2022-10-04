@@ -1,7 +1,8 @@
+import axios from 'axios'
+
 import React from 'react'
 import player_title from './player_title.png'
 import { Song } from '../types/Song.types'
-import axios from 'axios'
 import { useDispatch } from 'react-redux'
 
 import { updateSongs } from '../../redux/actions/songs'

@@ -2,7 +2,6 @@ import React, { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMVState } from '../../redux/actions/mv'
 import { RootState } from '../../redux/store'
-import { MvState } from '../types/MV.types'
 
 interface VideoConProps {
 }
