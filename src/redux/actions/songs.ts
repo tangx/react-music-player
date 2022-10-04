@@ -1,16 +1,14 @@
 import axios from 'axios'
 
-import { Song, Music, MusicDetail } from '../../components/types/Song.types'
+import { Song, SongDetail, SongCover } from '../../components/types/Song.types'
 import { EnumSongs } from '../reducers/songs'
 
 
 
-export type SearchSongAction = {
+export type SongAction = {
   type: EnumSongs,
   data: Song[],
 }
-
-
 
 export function updateSongs(data: Song[]) {
   return {
@@ -18,3 +16,5 @@ export function updateSongs(data: Song[]) {
     data: data,
   }
 }
+
+

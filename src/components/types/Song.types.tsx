@@ -5,9 +5,8 @@ export type Song = {
   mvid: number,
 }
 
-
-
-export type Music = {
+// 歌曲详细信息
+export type SongDetail = {
   id: number
   url: string
   md5: string
@@ -15,8 +14,8 @@ export type Music = {
   size: number
 }
 
-
-export type MusicDetail = {
+// 歌曲封面信息
+export type SongCover = {
   name: string
   al: {
     id: number
@@ -24,5 +23,11 @@ export type MusicDetail = {
     name: string
     picUrl: string
   }
-
 }
+
+export type Music = {
+  musicURL: string
+  coverURL: string
+}
+
+

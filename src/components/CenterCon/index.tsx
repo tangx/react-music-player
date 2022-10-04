@@ -9,7 +9,7 @@ import { RootState } from '../../redux/store'
 
 interface CenterConProps {
   // songs: Song[]
-  getMusic: (id: number) => void
+  // getMusic: (id: number) => void
   picURL: string
   hotComments: HotComment[]
   isPlaying: boolean
@@ -22,7 +22,7 @@ export default function CenterCon(props: CenterConProps) {
   return (
     <div className='center_con'>
       <SongWrapper
-        getMusic={props.getMusic}
+        // getMusic={props.getMusic}
         playMV={props.playMV}
       />
       <PlayerCon picURL={props.picURL}

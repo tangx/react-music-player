@@ -33,7 +33,7 @@ export default function SearchBar(props: SearchBarProps) {
     axios.get<RespData>(target)
       .then(
         (resp) => {
-          console.log("==>", resp.data);
+          // console.log("==>", resp.data);
           // console.log("@@=>", resp.data.result.songs);
           const songs = resp.data.result.songs
 
