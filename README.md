@@ -6,3 +6,16 @@
 ```bash
 $ npx create-react-app hkzf-mobile --template typescript
 ```
+
+目录结构
+
+```
+src/
+ assets/
+ components/
+ pages/
+ utils/
+ App.tsx
+ index.css
+ index.ts
+```
