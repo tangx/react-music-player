@@ -19,3 +19,19 @@ src/
  index.css
  index.ts
 ```
+
+## 安装 antd-mobile 组件
+
+```bash
+$ yarn add antd-mobile
+```
+
+https://mobile.ant.design/zh/guide/quick-start
+
+antd-mobile v5 已经不需要单独导入 css 文件了
+
+## 安装 react-router-dom 5.2.1
+
+```bash
+$ yarn add react-router-dom@5.2.1
+```
