@@ -52,3 +52,29 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 <Route path="/citylist" componenet={CityList}>
 ```
 
+### 嵌套路由（子路由）
+
+1. 在 `pages` 文件夹中创建 `News/indexjs` 组件。
+2. 在 `Home` 组件中， 添加一个 Route 作为自路由（嵌套路由） 的出口
+3. 嵌套路由的的 path 格式 **以父路由的 path 开头**（父组件展示， 子组件才会展示）
+4. 修改地址栏为 /home/news 的时候， News 信息就可以在 Home 中展示了。
+
+```js
+// 外层
+<Router> 
+<div>
+  <Route path='/home' componenet={Home}/>
+</div>
+</Router>
+```
+
+```js
+// 嵌套
+const Home=()=>(
+    <div>
+        <Link to="/home/news">动态</Link>
+        
+        <Route path='/home/news' componenet={News}/>
+    </div>
+)
+```
