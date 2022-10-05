@@ -1,10 +1,12 @@
 import { Music } from '../../components/types/Song.types'
 import { MusicAction, EnumMusic } from '../actions/music'
 
-type IPreState = Music | null
-
-const initState = null
-export default function (prestate: IPreState = initState, action: MusicAction) {
+const initState: Music = {
+  musicURL: "",
+  coverURL: "",
+  isPlaying: false,
+}
+export default function (prestate: Music = initState, action: MusicAction) {
 
   switch (action.type) {
     case EnumMusic.UpdateMusic:

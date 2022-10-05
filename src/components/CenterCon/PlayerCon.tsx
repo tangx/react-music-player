@@ -11,13 +11,9 @@ interface PlayerConProps {
 export default function PlayerCon(props: PlayerConProps) {
 
   // 根据状态返回 className
-  const isPlaying = useSelector((state: RootState) => {
-    return state.playing
-  })
+  const music = useSelector((state: RootState) => state.music)
 
-  const coverURL = useSelector((state: RootState) => {
-    return state.music === null ? "#" : state.music.coverURL
-  })
+  const { coverURL, isPlaying } = music
 
   const classIsPlaying = isPlaying ? "player_con playing" : "player_con"
   return (

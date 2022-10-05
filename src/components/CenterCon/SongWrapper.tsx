@@ -139,6 +139,7 @@ export default function SongWrapper(props: SongWrapperProps) {
     const music: Music = {
       coverURL: coverURL!,
       musicURL: musicURL!,
+      isPlaying: true,
     }
     dispatch(updateMusic(music))
 

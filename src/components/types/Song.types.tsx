@@ -28,6 +28,7 @@ export type SongCover = {
 export type Music = {
   musicURL: string
   coverURL: string
+  isPlaying: boolean
 }
 
 
