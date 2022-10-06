@@ -50,3 +50,45 @@ export default function IndexRouter() {
     + `Login/index.jsx`
     + `NewsSandBox/index.jsx`
 2. `src/components`: 用于实际功能的组件， 共享组件。
+
+## 搭建路由
+
+假装登陆， 打开 chrome 浏览器工具栏， `Console` 标签
+
+```jsx
+> localStorage.setItem("token","zhangsan")
+```
+
+在 `src/views/sandbox/NewSandBox.jsx` 创建划分功能区
++ SideMenu: 左侧导航条
++ TopHeader: 头部展示区
++ Content: 内容展示区
+
+![router-layout](./img//router-layout.png)
+
+```jsx
+export default function NewsSandBox() {
+  return (
+    <div>
+      <h3>sandbox</h3>
+
+      <SideMenu />
+      <TopHeader />
+
+      <h3>content</h3>
+      <Switch>
+        <Route path="/home" component={Home} exact></Route>
+        <Route path="/user-manage/list" component={UserList}></Route>
+        <Route path="/right-manage/rightlist" component={RightList}></Route>
+        <Route path="/right-manage/role/list" component={RoleList}></Route>
+
+        {/* 首页重定向, 精确匹配*/}
+        <Redirect from="/" to="/home" exact />
+
+        {/* 默认路由， 无权限 */}
+        <Route path="*" component={NoPermission}></Route>
+      </Switch>
+    </div>
+  )
+}
+```
