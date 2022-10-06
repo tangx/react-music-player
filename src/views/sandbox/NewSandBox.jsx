@@ -49,7 +49,7 @@ export default function NewsSandBox() {
           <Switch>
             <Route path="/home" component={Home} exact></Route>
             <Route path="/user-manage/list" component={UserList}></Route>
-            <Route path="/right-manage/rightlist" component={RightList}></Route>
+            <Route path="/right-manage/right/list" component={RightList}></Route>
             <Route path="/right-manage/role/list" component={RoleList}></Route>
 
             {/* 首页重定向, 精确匹配*/}
