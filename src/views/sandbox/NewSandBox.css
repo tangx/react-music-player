@@ -20,3 +20,6 @@
     background: #fff;
   }
   
+  #root, .ant-layout{
+    height: 100%;
+  }

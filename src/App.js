@@ -2,13 +2,14 @@
 import IndexRouter from "./router/IndexRouter";
 
 import 'antd/dist/antd.css';
+import { Fragment } from "react";
 
 
 function App() {
   return (
-    <div>
+    <Fragment>
       <IndexRouter> </IndexRouter>
-    </div>
+    </Fragment>
   );
 }
 

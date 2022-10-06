@@ -31,39 +31,37 @@ export default function NewsSandBox() {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div>
-      <Layout>
-        <SideMenu />
+    <Layout>
+      <SideMenu />
 
-        <Layout className="site-layout">
-          <TopHeader></TopHeader>
+      <Layout className="site-layout">
+        <TopHeader></TopHeader>
 
-          <Content
-            className="site-layout-background"
-            style={{
-              margin: '24px 16px',
-              padding: 24,
-              minHeight: 280,
-            }}
-          >
-            <h3>Content</h3>
-            <Switch>
-              <Route path="/home" component={Home} exact></Route>
-              <Route path="/user-manage/list" component={UserList}></Route>
-              <Route path="/right-manage/rightlist" component={RightList}></Route>
-              <Route path="/right-manage/role/list" component={RoleList}></Route>
+        <Content
+          className="site-layout-background"
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+          }}
+        >
+          <h3>Content</h3>
+          <Switch>
+            <Route path="/home" component={Home} exact></Route>
+            <Route path="/user-manage/list" component={UserList}></Route>
+            <Route path="/right-manage/rightlist" component={RightList}></Route>
+            <Route path="/right-manage/role/list" component={RoleList}></Route>
 
-              {/* 首页重定向, 精确匹配*/}
-              <Redirect from="/" to="/home" exact />
+            {/* 首页重定向, 精确匹配*/}
+            <Redirect from="/" to="/home" exact />
 
-              {/* 默认路由， 无权限 */}
-              <Route path="*" component={NoPermission}></Route>
-            </Switch>
-          </Content>
+            {/* 默认路由， 无权限 */}
+            <Route path="*" component={NoPermission}></Route>
+          </Switch>
+        </Content>
 
-        </Layout>
       </Layout>
+    </Layout>
 
-    </div>
   )
 }
