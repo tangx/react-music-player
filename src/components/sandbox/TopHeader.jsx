@@ -31,13 +31,11 @@ export default function TopHeader() {
       {collapsed ? <MenuUnfoldOutlined onClick={changeCollapsed} /> : <MenuFoldOutlined onClick={changeCollapsed} />}
 
       <div style={{ float: "right" }}>
-
         <span>欢迎回来: xxx</span>
         <Dropdown overlay={menu}>
           <a onClick={(e) => e.preventDefault()}>
             <Space>
               <Avatar size={32} icon={<UserOutlined />} />
-
               <DownOutlined />
             </Space>
           </a>
