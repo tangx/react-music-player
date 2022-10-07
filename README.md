@@ -8,3 +8,4 @@
 4. TopHeader
 5. [动态 SideMenu](./docs/05-dynamic-side-menu.md)
 6. [模拟数据 json-server](./docs//06-json-server.md)
+7. [挂载组件并请求 SideMenu 数据](./docs/07-remote-side-menu.md)
