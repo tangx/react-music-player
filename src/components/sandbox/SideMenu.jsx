@@ -51,11 +51,32 @@ function SideMenu(props) {
     axios.get("http://localhost:5001/rights?_embed=children").then(
       (resp) => {
         let items = parseItem(resp.data)
-        console.log("!!!!!=>>", items);
+        // console.log("!!!!!=>>", items);
         setMenus(items)
       }
     )
   }, [])
+
+
+  /** 高亮选择栏目， 刷新也存在 */
+  // console.log(props.location);
+  const selectKeys = [props.location.pathname]
+  const openKeys = () => {
+    const pathname = props.location.pathname
+    const paths = pathname.split("/")
+
+    let keys = []
+    let tmp = ""
+    for (const i in paths) {
+      if (i == 0) {
+        continue
+      }
+
+      tmp = tmp + "/" + paths[i]
+      keys.push(tmp)
+    }
+    return keys
+  }
 
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -65,8 +86,8 @@ function SideMenu(props) {
         {/* style 实现侧边栏的滚动条， 不影响右侧 */}
         <div style={{ flex: 1, "overflow": "auto" }}>
           <Menu
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
+            selectedKeys={selectKeys}
+            openKeys={openKeys()}
             mode="inline"
             theme="dark"
             items={menus}

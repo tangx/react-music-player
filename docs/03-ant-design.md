@@ -9,7 +9,7 @@ $ yarn add antd
 **使用**： 注意， 需要引入 `antd/dist/antd.css`。
 
 ```jsx
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import { Button } from "antd";
 
 

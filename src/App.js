@@ -1,7 +1,7 @@
 
 import IndexRouter from "./router/IndexRouter";
 
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import { Fragment } from "react";
 
 
