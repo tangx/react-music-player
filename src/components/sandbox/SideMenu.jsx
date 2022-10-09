@@ -32,10 +32,14 @@ function parseItem(items) {
       return null
     }
 
-    if (item.children) {
+    // 有子组件
+    if (item.children?.length > 0) {
       item.children = parseItem(item.children)
+      return getItem(item.title, item.key, <DesktopOutlined />, item.children)
     }
-    return getItem(item.title, item.key, <DesktopOutlined />, item.children)
+
+    // 没有子组件
+    return getItem(item.title, item.key, <DesktopOutlined />)
   })
 }
 
@@ -47,6 +51,7 @@ function SideMenu(props) {
     axios.get("http://localhost:5001/rights?_embed=children").then(
       (resp) => {
         let items = parseItem(resp.data)
+        console.log("!!!!!=>>", items);
         setMenus(items)
       }
     )
@@ -54,15 +59,21 @@ function SideMenu(props) {
 
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
-      <div className="logo" >全球新闻发布管理系统</div>
-      <Menu
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        mode="inline"
-        theme="dark"
-        items={menus}
-        onClick={(item) => { props.history.push(item.key) }}
-      />
+      {/* style 实现垂直排列 */}
+      <div style={{ display: "flex", height: "100%", "flexDirection": "column" }}>
+        <div className="logo" >全球新闻发布管理系统</div>
+        {/* style 实现侧边栏的滚动条， 不影响右侧 */}
+        <div style={{ flex: 1, "overflow": "auto" }}>
+          <Menu
+            defaultSelectedKeys={['1']}
+            defaultOpenKeys={['sub1']}
+            mode="inline"
+            theme="dark"
+            items={menus}
+            onClick={(item) => { props.history.push(item.key) }}
+          />
+        </div>
+      </div>
     </Sider>
   )
 }
