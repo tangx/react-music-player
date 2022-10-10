@@ -45,7 +45,8 @@ export default function RightList() {
   const [dataSource, setDataSource] = useState([])
 
   useEffect(() => {
-    axios.get(`http://localhost:5001/rights`)
+    const target = `http://localhost:5001/rights?_embed=children`
+    axios.get(target)
       .then(
         (resp) => {
           // console.log(resp.data);
