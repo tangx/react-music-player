@@ -43,6 +43,7 @@ export default function NewsSandBox() {
             margin: '24px 16px',
             padding: 24,
             minHeight: 280,
+            overflow: "auto",
           }}
         >
           <h3>Content</h3>

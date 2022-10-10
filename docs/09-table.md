@@ -41,6 +41,7 @@ const columns = [
     2. dataIndex 字段: 匹配的 dataSource 中的字段值。 例如 name 匹配 name， age 匹配 age
     3. key: 使用 **受控组件时，必要， 对属性进行筛选和排序控制**。 搜索文档
     4. render: 生成复杂数据的 **渲染函数**，参数分别为**当前行的值，当前行数据，行索引**。
+    5. pagination: 分页器。 当数据过多时， 分多页展示。 pagination 本身是嵌套组件， 具体参数看 pagination。 
 
 ## 优化 Table 输出
 

@@ -81,7 +81,7 @@ function SideMenu(props) {
       <div style={{ display: "flex", height: "100%", "flexDirection": "column" }}>
         <div className="logo" >全球新闻发布管理系统</div>
         {/* style 实现侧边栏的滚动条， 不影响右侧 */}
-        <div style={{ flex: 1, "overflow": "auto" }}>
+        <div style={{ flex: 1, overflow: "auto" }}>
           <Menu
             selectedKeys={selectKeys}
             defaultOpenKeys={defaultOpenKeys()}

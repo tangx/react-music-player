@@ -56,7 +56,10 @@ export default function RightList() {
 
   return (
     <div>
-      <Table dataSource={dataSource} columns={columns} />;
+      <Table dataSource={dataSource} columns={columns}
+        pagination={{
+          pageSize: 5,
+        }} />;
     </div>
   )
 }
