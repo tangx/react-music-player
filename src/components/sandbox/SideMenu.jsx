@@ -61,20 +61,17 @@ function SideMenu(props) {
   /** 高亮选择栏目， 刷新也存在 */
   // console.log(props.location);
   const selectKeys = [props.location.pathname]
-  const openKeys = () => {
-    const pathname = props.location.pathname
-    const paths = pathname.split("/")
+  const defaultOpenKeys = () => {
+    const paths = props.location.pathname.split("/")
 
     let keys = []
     let tmp = ""
-    for (const i in paths) {
-      if (i == 0) {
-        continue
+    paths.map((path) => {
+      if (path !== "") {
+        tmp = tmp + "/" + path
+        keys.push(tmp)
       }
-
-      tmp = tmp + "/" + paths[i]
-      keys.push(tmp)
-    }
+    })
     return keys
   }
 
@@ -87,7 +84,7 @@ function SideMenu(props) {
         <div style={{ flex: 1, "overflow": "auto" }}>
           <Menu
             selectedKeys={selectKeys}
-            openKeys={openKeys()}
+            defaultOpenKeys={defaultOpenKeys()}
             mode="inline"
             theme="dark"
             items={menus}
