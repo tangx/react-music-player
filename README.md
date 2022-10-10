@@ -10,3 +10,4 @@
 6. [模拟数据 json-server](./docs//06-json-server.md)
 7. [挂载组件并请求 SideMenu 数据](./docs/07-remote-side-menu.md)
 8. [优化 SideMenu 显示效果](./docs/08-optimize-side-menu.md)
+9. [使用 Table 暂时表格数据](./docs/09-table.md)
