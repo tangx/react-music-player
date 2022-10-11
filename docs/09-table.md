@@ -93,3 +93,96 @@ const columns = [
 ```jsx
 render: (text)=>{return {text}}
 ```
+
+## 删除确认
+
+使用 `confirm` 进行删除确认
+
+> https://ant-design.gitee.io/components/modal-cn/#Modal.method()
+
+
+需要注意的时候， 在 columns 字段中， 是否使用 dataIndex 对 render 传入参数有影响。
+1. 没有 dataIndex 的时候， item 为整个数据。
+2. 有 dataIndex 的时候， item 为 dataIndex 对应项目的值
+
+```jsx
+ const columns = [
+    {
+      title: '操作',
+      // dataIndex: 'id', 
+
+      // 没有 dataIndex 的时候， item 为整个数据。
+      // 有 dataIndex 的时候， item 为 dataIndex 对应项目的值
+      render: (item) => {
+        return (
+          <div >
+            <Button danger shape="circle" icon={<DeleteOutlined />}
+              onClick={() => handleDelete(item)} />
+            <Button type="primary" style={{ margin: "0 10px" }}>编辑</Button>
+          </div >
+        )
+      }
+    },
+  ];
+```
+
+在执行删除操作的时候， 需要注意删除的表对象。
+
+1. **一级菜单** 对应表为 `rights`
+2. **二级菜单** 对应表为 `children`
+
+```jsx
+  const { confirm } = Modal
+  const handleDelete = (item) => {
+    confirm({
+      title: 'Do you Want to delete these items?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Some descriptions',
+      onOk() {
+        // console.log('OK', item);
+
+        // 默认删除 rights 表数据
+        let target = `http://localhost:5001/rights/${item.id}`
+        if ("rightId" in item) {
+          // 存在 rightId ， 为 children 表
+          target = `http://localhost:5001/children/${item.id}`
+        }
+        axios.delete(target).then(() => {
+          loadDataSource()
+        })
+      },
+      onCancel() {
+        // console.log('user Cancel', item);
+      },
+    });
+  }
+```
+
+在上述代码中，使用了 `"rightId" in item` **in** 操作符判断 object 对象中是否具有某字段。
+
+### 优化树状结构显示
+
+默认情况下， 返回的数据中， children 可能为 **空数组**。 此时 antd 会将该字段也添加 **可展开按钮**。
+
+通过使用 `list.forEach()` 方法重新定义空数组的 children 字段。
+```jsx
+  const loadDataSource = () => {
+    const target = `http://localhost:5001/rights?_embed=children`
+    axios.get(target)
+      .then(
+        (resp) => {
+          // console.log(resp.data);
+          const list = resp.data
+
+          // 如果 children 字段长度为0， 则不要
+          list.forEach((item) => {
+            if (item.children.length === 0) {
+              item.children = null
+            }
+          })
+
+          setDataSource(list)
+        }
+      )
+  }
+```
