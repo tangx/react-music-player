@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Table, Tag, Modal } from 'antd'
+import { Button, Table, Tag, Modal, Popover, Switch } from 'antd'
 import axios from 'axios'
 import {
   DeleteOutlined,
@@ -8,6 +8,8 @@ import {
 
 
 export default function RightList() {
+
+
   const columns = [
     {
       title: "ID",
@@ -38,16 +40,29 @@ export default function RightList() {
       // 没有 dataIndex 的时候， item 为整个数据。
       // 有 dataIndex 的时候， item 为 dataIndex 对应项目的值
       render: (item) => {
+
+        const content = (
+          <Switch onClick={() => { handleSwitchVisiable(item) }} checked={item.pagepermisson}></Switch>
+        )
+
         return (
           <div >
             <Button danger shape="circle" icon={<DeleteOutlined />}
               onClick={() => handleDelete(item)} />
-            <Button type="primary" style={{ margin: "0 10px" }}>编辑</Button>
+
+            <Button type="primary" style={{ margin: "0 10px" }}
+              disabled={item.pagepermisson === undefined ? true : false}
+            >
+              <Popover content={content} title="是否在菜单可见" trigger="click"
+                style={{ align: "center" }}>编辑
+              </Popover>
+            </Button>
           </div >
         )
       }
     },
   ];
+
   const [dataSource, setDataSource] = useState([])
 
   const loadDataSource = () => {
@@ -97,6 +112,21 @@ export default function RightList() {
         // console.log('user Cancel', item);
       },
     });
+  }
+
+  const handleSwitchVisiable = (item) => {
+    // console.log(item);
+
+    const permission = item.pagepermisson === 1 ? 0 : 1
+    let target = `http://localhost:5001/rights/${item.id}`
+    if ("rightId" in item) {
+      // 存在 rightId ， 为 children 表
+      target = `http://localhost:5001/children/${item.id}`
+    }
+
+    axios.patch(target, { pagepermisson: permission }).then(() => {
+      loadDataSource()
+    })
   }
 
   return (

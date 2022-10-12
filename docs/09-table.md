@@ -1,8 +1,14 @@
 # 使用 Table 组件展示权限列表
 
-> https://ant-design.gitee.io/components/table-cn/#header
+![](./img/permission-management.png)
+
+
 
 ## 使用 Table 组件展示权限列表
+
+> table 组件: https://ant-design.gitee.io/components/table-cn/#header
+
+
 
 ```jsx
 const dataSource = [
@@ -184,5 +190,59 @@ render: (text)=>{return {text}}
           setDataSource(list)
         }
       )
+  }
+```
+
+## 使用 Popover 和 Switch 控制权限
+
+> Switch 开关: https://ant-design.gitee.io/components/switch-cn/#header
+> Popover 气泡卡片: https://ant-design.gitee.io/components/popover-cn/#header
+
+
+### 使用 Popover
+
+使用 Button 包裹 Popover
+1. 当 Button 被禁用的时候， Popover 也不能使用。
+2. 通过判断对象是否具有 `pagepermission` 属性来确定是否禁用 Button
+
+```jsx
+<Button type="primary" style={{ margin: "0 10px" }}
+    disabled={item.pagepermisson === undefined ? true : false}
+>
+    <Popover content={content} title="是否在菜单可见" trigger="click"
+    style={{ align: "center" }}>编辑
+    </Popover>
+</Button>
+```
+
+### 使用 Switch
+
+Switch 比较简单
+
+1. 通过 checked 属性展示标签状态
+
+```jsx
+<Switch onClick={() => { handleSwitchVisiable(item) }} checked={item.pagepermisson}></Switch>
+```
+
+### 使用 `axios.patch` 修改数据
+
+1. patch 方法修改数据只会修改传入字段。
+2. 而 put 方法则会替换整个对象。
+
+```js
+  const handleSwitchVisiable = (item) => {
+    // console.log(item);
+
+    const permission = item.pagepermisson === 1 ? 0 : 1
+    let target = `http://localhost:5001/rights/${item.id}`
+    if ("rightId" in item) {
+      // 存在 rightId ， 为 children 表
+      target = `http://localhost:5001/children/${item.id}`
+    }
+
+    axios.patch(target, { pagepermisson: permission }).then(() => {
+      loadDataSource()
+    })
   }
 ```
