@@ -3,7 +3,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
 
-import { Button, Table, Modal } from 'antd'
+import { Button, Table, Modal, Tree } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 
@@ -27,7 +27,7 @@ export default function RoleList() {
         return (
           <div>
             <Button danger onClick={() => { handleDelete(item) }}>删除</Button>
-            <Button type="primary">编辑</Button>
+            <Button type="primary" onClick={() => handleIsShowRightTree(item)}>编辑</Button>
           </div>
         )
       },
@@ -35,8 +35,18 @@ export default function RoleList() {
   ]
 
 
+  useEffect(() => {
+    loadRoles()
+    loadRightList()
+  }, [])
+
+
   const [dataSource, setDataSource] = useState([])
   const { confirm } = Modal
+  const [isShowRightTree, setIsShowRightTree] = useState(false)
+  const [treeData, setTreeData] = useState([])
+  const [currentRights, setCurrentRights] = useState([])
+  const [currentId, setCurrentId] = useState(0)
 
   const handleDelete = (item) => {
 
@@ -60,9 +70,6 @@ export default function RoleList() {
         // },
       }
     )
-
-
-
   }
 
   const loadRoles = () => {
@@ -74,16 +81,68 @@ export default function RoleList() {
     )
   }
 
-  useEffect(() => {
-    loadRoles()
-  }, [])
+  const loadRightList = () => {
+    const target = `http://localhost:5001/rights?_embed=children`
+    axios.get(target).then(
+      (resp) => {
+        // console.log(resp.data);
+        setTreeData(resp.data)
+      }
+    )
+  }
 
+  const handleIsShowRightTree = (item) => {
+    // loadRightList()
+    setIsShowRightTree(true)
+
+    // console.log(item);
+    setCurrentRights(item.rights)
+    setCurrentId(item.id)
+
+  }
+  const handleCancelRightTree = () => {
+    setIsShowRightTree(false)
+  }
+  const handleOkRightTree = () => {
+    setIsShowRightTree(false)
+
+    const target = `http://localhost:5001/roles/${currentId}`
+    axios.patch(target, {
+      rights: currentRights,
+    }).then(
+      () => {
+        // loadRightList()
+        loadRoles()
+      }
+    )
+  }
+
+
+  const handleOnChecked = (rights) => {
+    // console.log(rights);
+    console.log(rights.checked);
+    setCurrentRights(rights.checked)
+  }
 
   return (
     <div>
       <Table rowKey="id" columns={columns} dataSource={dataSource} >
-
       </Table>
+
+      <Modal title="Basic Modal" open={isShowRightTree} onOk={handleOkRightTree} onCancel={handleCancelRightTree}>
+        <Tree
+          checkable
+          // onExpand={onExpand}
+          // expandedKeys={expandedKeys}
+          // autoExpandParent={autoExpandParent}
+          onCheck={handleOnChecked}
+          // onSelect={onSelect}
+          // selectedKeys={selectedKeys}
+          checkStrictly={true}
+          checkedKeys={currentRights}
+          treeData={treeData}
+        />
+      </Modal>
     </div>
   )
 }
