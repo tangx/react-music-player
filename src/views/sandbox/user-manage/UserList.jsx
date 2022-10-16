@@ -1,13 +1,7 @@
-import { Button, Input, Modal, Switch, Table } from 'antd'
+import { Button, Form, Input, Modal, Select, Switch, Table } from 'antd'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-
-// const roleMap = {
-//   "1": "超级管理员",
-//   "2": "区域管理员",
-//   "3": "区域编辑",
-// }
 
 export default function UserList() {
 
@@ -61,7 +55,11 @@ export default function UserList() {
   ]
 
   const [usersData, setUsersData] = useState([])
+  const [regionsData, setRegionsData] = useState([])
+  const [rolesData, setRolesData] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const { Option } = Select
 
   const loadUsersData = () => {
     const target = `http://localhost:5001/users?_expand=role`
@@ -72,8 +70,29 @@ export default function UserList() {
     )
   }
 
+  const loadRegions = () => {
+    const target = `http://localhost:5001/regions`
+    axios.get(target).then(
+      (resp) => {
+        setRegionsData(resp.data)
+      }
+    )
+  }
+
+  const loadRolesData = () => {
+    const target = `http://localhost:5001/roles`
+    axios.get(target).then(
+      (resp) => {
+        setRolesData(resp.data)
+      }
+    )
+  }
+
+
   useEffect(() => {
     loadUsersData()
+    loadRegions()
+    loadRolesData()
   }, [])
 
 
@@ -105,10 +124,61 @@ export default function UserList() {
         pagination={{ pageSize: 5 }} />
 
       <Modal open={isModalOpen} onCancel={handleOnCancel_Modal} onOk={handleOnOk_Modal}>
-        <Input addonBefore="用户名" />
-        <Input addonBefore="密码" />
-        <Input addonBefore="区域" />
-        <Input addonBefore="角色" />
+        <Form
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          // onFinish={onFinish}
+          // onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+
+          <Form.Item
+            label="用户名"
+            name="username"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="密码"
+            name="password"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            label="区域"
+            name="region"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Select>
+              {
+                regionsData.map((region) => {
+                  return <Option key={region.id} value={region.value}>{region.value}</Option>
+                })
+              }
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="角色"
+            name="role"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Select>
+              {
+                rolesData.map((role) => {
+                  return <Option key={role.id} value={role.roleName}>{role.roleName}</Option>
+                })
+              }
+            </Select>
+          </Form.Item>
+
+
+        </Form>
       </Modal>
     </div>
   )
