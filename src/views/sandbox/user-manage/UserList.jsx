@@ -1,6 +1,7 @@
 import { Button, Form, Input, Modal, Select, Switch, Table } from 'antd'
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import UserForm from '../../../components/user-manage/UserForm'
 
 
 export default function UserList() {
@@ -58,6 +59,7 @@ export default function UserList() {
   const [regionsData, setRegionsData] = useState([])
   const [rolesData, setRolesData] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const refAddForm = useRef(null)
 
   const { Option } = Select
 
@@ -115,6 +117,30 @@ export default function UserList() {
   }
   const handleOnOk_Modal = () => {
     setIsModalOpen(false)
+    // console.log("add==>", refAddForm);
+
+    refAddForm.current.validateFields().then(
+      (value) => {
+        console.log(value);
+
+        // create user
+        const target = `http://localhost:5001/users`
+        axios.post(target, {
+          ...value,
+          roleState: true,
+          default: false
+        }).then(
+          () => {
+            loadUsersData()
+          }
+        )
+      }
+    ).catch(
+      (err) => {
+        console.log(err);
+      }
+    )
+
   }
 
   return (
@@ -123,62 +149,13 @@ export default function UserList() {
       <Table rowKey="id" dataSource={usersData} columns={columns}
         pagination={{ pageSize: 5 }} />
 
-      <Modal open={isModalOpen} onCancel={handleOnCancel_Modal} onOk={handleOnOk_Modal}>
-        <Form
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          initialValues={{ remember: true }}
-          // onFinish={onFinish}
-          // onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-
-          <Form.Item
-            label="用户名"
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[{ required: true, message: 'Please input your username!' }]}
-          >
-            <Input.Password />
-          </Form.Item>
-
-          <Form.Item
-            label="区域"
-            name="region"
-            rules={[{ required: true, message: 'Please input your username!' }]}
-          >
-            <Select>
-              {
-                regionsData.map((region) => {
-                  return <Option key={region.id} value={region.value}>{region.value}</Option>
-                })
-              }
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="角色"
-            name="role"
-            rules={[{ required: true, message: 'Please input your username!' }]}
-          >
-            <Select>
-              {
-                rolesData.map((role) => {
-                  return <Option key={role.id} value={role.roleName}>{role.roleName}</Option>
-                })
-              }
-            </Select>
-          </Form.Item>
-
-
-        </Form>
+      <Modal open={isModalOpen}
+        onCancel={handleOnCancel_Modal}
+        onOk={handleOnOk_Modal}
+      >
+        <UserForm regionsData={regionsData}
+          rolesData={rolesData}
+          ref={refAddForm} />
       </Modal>
     </div>
   )
