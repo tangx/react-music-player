@@ -47,7 +47,7 @@ export default function UserList() {
       render: (item) => {
         return (
           <div>
-            <Button danger disabled={item.default}> 删除</Button >
+            <Button danger disabled={item.default} onClick={() => { handleDeleteUser(item) }}> 删除</Button >
             <Button type="primary" disabled={item.default}>编辑</Button>
           </div >
         )
@@ -60,8 +60,6 @@ export default function UserList() {
   const [rolesData, setRolesData] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const refAddForm = useRef(null)
-
-  const { Option } = Select
 
   const loadUsersData = () => {
     const target = `http://localhost:5001/users?_expand=role`
@@ -141,7 +139,14 @@ export default function UserList() {
         console.log(err);
       }
     )
+  }
 
+  const handleDeleteUser = (item) => {
+    // console.log(item);
+    const target = `http://localhost:5001/users/${item.id}`
+    axios.delete(target).then(() => {
+      loadUsersData()
+    })
   }
 
   return (
