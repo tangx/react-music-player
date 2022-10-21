@@ -48,7 +48,9 @@ export default function UserList() {
         return (
           <div>
             <Button danger disabled={item.default} onClick={() => { handleDeleteUser(item) }}> 删除</Button >
-            <Button type="primary" disabled={item.default}>编辑</Button>
+            <Button type="primary" disabled={item.default} onClick={() => {
+              handleEditUser(item)
+            }}>编辑</Button>
           </div >
         )
       }
@@ -60,6 +62,7 @@ export default function UserList() {
   const [rolesData, setRolesData] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const refAddForm = useRef(null)
+  const [userFormAction, setUserFormAction] = useState("")
 
   const loadUsersData = () => {
     const target = `http://localhost:5001/users?_expand=role`
@@ -108,31 +111,50 @@ export default function UserList() {
     )
   }
   const handleOnClick_AddUser = () => {
+    setUserFormAction("AddUser")
     setIsModalOpen(true)
   }
   const handleOnCancel_Modal = () => {
     setIsModalOpen(false)
+    setUserFormAction("")
   }
 
   const handleOnOk_Modal = () => {
     setIsModalOpen(false)
+    setUserFormAction("")
     // console.log("add==>", refAddForm);
 
     refAddForm.current.validateFields().then(
       (value) => {
-        console.log(value);
+        // console.log(value);
 
-        // create user
-        const target = `http://localhost:5001/users`
-        axios.post(target, {
-          ...value,
-          roleState: true,
-          default: false
-        }).then(
-          () => {
-            loadUsersData()
-          }
-        )
+        switch (setUserFormAction) {
+          case "AddUser":
+            // create user
+            const target = `http://localhost:5001/users`
+            axios.post(target, {
+              ...value,
+              roleState: true,
+              default: false
+            }).then(
+              () => {
+                loadUsersData()
+              }
+            )
+          // case "EditUser":
+          //   // create user
+          //   const target2 = `http://localhost:5001/users`
+          //   axios.patch(target2, {
+          //     ...value,
+          //     roleState: true,
+          //     default: false
+          //   }).then(
+          //     () => {
+          //       loadUsersData()
+          //     }
+          //   )
+        }
+
       }
     ).catch(
       (err) => {
@@ -147,6 +169,34 @@ export default function UserList() {
     axios.delete(target).then(() => {
       loadUsersData()
     })
+  }
+
+  const handleEditUser = (item) => {
+
+
+
+    // setTimeout(() => {
+    //   setUserFormAction("EditUser")
+    //   setIsModalOpen(true)
+    //   console.log("===>", item);
+
+    //   console.log(refAddForm.current);
+    //   // refAddForm.current.setFieldsValue({
+    //   //   item
+    //   // })
+    // }, 0)
+    setTimeout(
+
+      () => {
+        setIsModalOpen(true)
+        // console.log(refAddForm.current);
+        console.log(item);
+
+        refAddForm.current.setFieldsValue(
+          { ...item }
+        )
+      }
+      , 0)
   }
 
   return (

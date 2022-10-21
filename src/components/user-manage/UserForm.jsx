@@ -72,7 +72,10 @@ const UserForm = (props, ref) => {
         // rules={isSuperAdmin ? [] : [{ required: true, message: 'Please input your username!' }]}
         rules={[{ required: !isRegionDisabled, message: 'Please input your username!' }]}
       >
-        <Select disabled={isRegionDisabled}>
+        <Select
+          disabled={isRegionDisabled}
+        >
+
           {
             props.regionsData.map((region) => {
               return <Option key={region.id} value={region.value}>{region.value}</Option>
