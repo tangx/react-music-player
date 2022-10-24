@@ -3,25 +3,53 @@ import {
   Layout,
   Dropdown, Space, Menu,
   Avatar,
+  Button,
 } from 'antd';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   DownOutlined,
-  SmileOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import { withRouter } from 'react-router';
 
 
 
 const { Header } = Layout;
 
-export default function TopHeader() {
+function TopHeader(props) {
   const [collapsed, setCollapsed] = useState(false);
 
   const changeCollapsed = () => {
     setCollapsed(!collapsed)
   }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    props.history.replace("/login")
+  }
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: '1',
+          label: (
+            "超级管理员"
+          ),
+        },
+        {
+          key: '2',
+          danger: true,
+          onClick: handleLogout,
+          label: (
+            "退出"
+          ),
+        },
+      ]}
+    />
+  );
+
   return (
     <Header
       className="site-layout-background"
@@ -46,41 +74,6 @@ export default function TopHeader() {
 }
 
 
-const menu = (
-  <Menu
-    items={[
-      {
-        key: '1',
-        label: (
-          <a target="_blank" rel="noopener noreferrer" href="/#/home">
-            超级管理员
-          </a>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-            2nd menu item (disabled)
-          </a>
-        ),
-        icon: <SmileOutlined />,
-        disabled: true,
-      },
-      {
-        key: '3',
-        label: (
-          <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-            3rd menu item (disabled)
-          </a>
-        ),
-        disabled: true,
-      },
-      {
-        key: '4',
-        danger: true,
-        label: 'a danger item',
-      },
-    ]}
-  />
-);
+
+export default withRouter(TopHeader)
+
