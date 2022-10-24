@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Layout,
   Dropdown, Space, Menu,
@@ -13,11 +13,16 @@ import {
 } from '@ant-design/icons';
 import { withRouter } from 'react-router';
 
-
-
 const { Header } = Layout;
 
+
+// 头部组件
 function TopHeader(props) {
+
+  // 获取登录用户
+  const currentLoginUser = JSON.parse(localStorage.getItem("token"))
+
+
   const [collapsed, setCollapsed] = useState(false);
 
   const changeCollapsed = () => {
@@ -35,7 +40,8 @@ function TopHeader(props) {
         {
           key: '1',
           label: (
-            "超级管理员"
+            // "超级管理员2"
+            currentLoginUser?.role.roleName
           ),
         },
         {
@@ -50,6 +56,7 @@ function TopHeader(props) {
     />
   );
 
+
   return (
     <Header
       className="site-layout-background"
@@ -59,7 +66,7 @@ function TopHeader(props) {
       {collapsed ? <MenuUnfoldOutlined onClick={changeCollapsed} /> : <MenuFoldOutlined onClick={changeCollapsed} />}
 
       <div style={{ float: "right" }}>
-        <span>欢迎回来: xxx</span>
+        <span>欢迎回来: <b>{currentLoginUser?.username}</b></span>
         <Dropdown overlay={menu}>
           <a onClick={(e) => e.preventDefault()}>
             <Space>

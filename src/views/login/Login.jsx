@@ -1,13 +1,40 @@
 import React from 'react'
-import { Form, Input, Button, Checkbox } from 'antd'
+import { Form, Input, Button, Checkbox, message } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import './Login.css';
+import axios from 'axios';
+import { stringify } from 'rc-field-form/es/useWatch';
 
 
-export default function Login() {
+export default function Login(props) {
 
   const handleOnFinished = (values) => {
-    console.log(values);
+    // console.log(values);
+
+    // 用户登录验证并获取对应权限
+    axios.get(`http://localhost:5001/users?_expand=role&username=${values.username}&password=${values.password}&roleState=true`).then(
+      (resp) => {
+        // console.log("login resp", resp);
+
+        if (resp.data.length === 1) {
+
+          // 登录成功， 设置 token
+          const currentUser = resp.data[0]
+          localStorage.setItem("token", JSON.stringify(currentUser))
+
+          // 页面跳转
+          props.history.push("/")
+          return
+        }
+
+        // 用户验证失败
+        message.error("用户名或密码错误")
+      }
+    ).catch(
+      (err) => {
+        message.error("登录请求失败", err)
+      }
+    )
   }
 
   return (
