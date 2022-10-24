@@ -6,16 +6,39 @@ import UserForm from '../../../components/user-manage/UserForm'
 
 export default function UserList() {
 
+  const [usersData, setUsersData] = useState([])
+  const [regionsData, setRegionsData] = useState([])
+  const [rolesData, setRolesData] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const refAddForm = useRef(null)
+  const [userFormAction, setUserFormAction] = useState("")
+  const [currentUserData, setCurrentUserData] = useState({})
+
   const columns = [
     {
       title: "区域",
       dataIndex: "region",
       key: "region",
-      render: (item) => {
+      filters: [
+        ...regionsData.map((region) => {
+          return {
+            text: region.title,
+            value: region.value,
+          }
+        }),
+        {
+          text: "全球",
+          value: ""
+        }
+      ],
+      onFilter: (value, user) => {
+        return user.region === value;
+      },
+      render: (user) => {
         return (
-          <b>{item ? item : "全球"}</b>
+          <b>{user ? user : "全球"}</b>
         )
-      }
+      },
     },
     {
       title: "角色名称",
@@ -56,14 +79,6 @@ export default function UserList() {
       }
     }
   ]
-
-  const [usersData, setUsersData] = useState([])
-  const [regionsData, setRegionsData] = useState([])
-  const [rolesData, setRolesData] = useState([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const refAddForm = useRef(null)
-  const [userFormAction, setUserFormAction] = useState("")
-  const [currentUserData, setCurrentUserData] = useState({})
 
   const loadUsersData = () => {
     const target = `http://localhost:5001/users?_expand=role`
