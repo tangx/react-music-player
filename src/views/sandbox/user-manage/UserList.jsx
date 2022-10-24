@@ -63,6 +63,7 @@ export default function UserList() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const refAddForm = useRef(null)
   const [userFormAction, setUserFormAction] = useState("")
+  const [currentUserData, setCurrentUserData] = useState({})
 
   const loadUsersData = () => {
     const target = `http://localhost:5001/users?_expand=role`
@@ -120,15 +121,12 @@ export default function UserList() {
   }
 
   const handleOnOk_Modal = () => {
-    setIsModalOpen(false)
-    setUserFormAction("")
-    // console.log("add==>", refAddForm);
 
     refAddForm.current.validateFields().then(
       (value) => {
         // console.log(value);
 
-        switch (setUserFormAction) {
+        switch (userFormAction) {
           case "AddUser":
             // create user
             const target = `http://localhost:5001/users`
@@ -141,18 +139,17 @@ export default function UserList() {
                 loadUsersData()
               }
             )
-          // case "EditUser":
-          //   // create user
-          //   const target2 = `http://localhost:5001/users`
-          //   axios.patch(target2, {
-          //     ...value,
-          //     roleState: true,
-          //     default: false
-          //   }).then(
-          //     () => {
-          //       loadUsersData()
-          //     }
-          //   )
+          case "EditUser":
+            // create user
+            // console.log("currentUserData =>", currentUserData);
+            const target2 = `http://localhost:5001/users/${currentUserData.id}`
+            axios.patch(target2, {
+              ...value,
+            }).then(
+              () => {
+                loadUsersData()
+              }
+            )
         }
 
       }
@@ -161,6 +158,9 @@ export default function UserList() {
         console.log(err);
       }
     )
+
+    setIsModalOpen(false)
+    setUserFormAction("")
   }
 
   const handleDeleteUser = (item) => {
@@ -173,30 +173,18 @@ export default function UserList() {
 
   const handleEditUser = (item) => {
 
-
-
-    // setTimeout(() => {
-    //   setUserFormAction("EditUser")
-    //   setIsModalOpen(true)
-    //   console.log("===>", item);
-
-    //   console.log(refAddForm.current);
-    //   // refAddForm.current.setFieldsValue({
-    //   //   item
-    //   // })
-    // }, 0)
     setTimeout(
-
       () => {
         setIsModalOpen(true)
+        setUserFormAction("EditUser")
+        setCurrentUserData({ ...item })
         // console.log(refAddForm.current);
-        console.log(item);
+        // console.log(item);
 
         refAddForm.current.setFieldsValue(
           { ...item }
         )
-      }
-      , 0)
+      }, 0)
   }
 
   return (
