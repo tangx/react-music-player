@@ -82,9 +82,28 @@ export default function UserList() {
 
   const loadUsersData = () => {
     const target = `http://localhost:5001/users?_expand=role`
+
+    const currentLoginUser = JSON.parse(localStorage.getItem("token"))
+    console.log(currentLoginUser);
+    const { region, roleId } = currentLoginUser
+
     axios.get(target).then(
       (resp) => {
-        setUsersData(resp.data)
+        console.log(resp.data);
+
+        // 过滤用户
+        const users = resp.data.filter(
+          (user) => {
+            if (roleId === 1) {
+              // 如果是超级管理员, 所有用户都可以管理
+              return true
+            }
+            // 如果为普通管理员， 只能管理 **同区域** 的 **下属职能**
+            return region === user.region && user.roleId >= roleId
+          }
+        )
+
+        setUsersData(users)
       }
     )
   }
