@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Menu } from 'antd';
 import { withRouter } from 'react-router-dom';
 import {
-  UserOutlined,
   DesktopOutlined,
 } from '@ant-design/icons';
 
@@ -10,7 +9,7 @@ import './index.css';
 import axios from 'axios';
 
 
-const { Header, Sider, Content } = Layout;
+const { Sider, } = Layout;
 
 
 // 根据数据构造 Menu 组件属性
@@ -28,7 +27,15 @@ function getItem(label, key, icon, children, type) {
 function parseItem(items) {
   return items.map((item) => {
     // 如果非页面组件， 则跳过
+    // console.log("item?????", item);
     if (item.pagepermisson !== 1) {
+      return null
+    }
+
+    // 获取当前用户， 判断用户是否具有列表权限
+    const currentLoginUser = JSON.parse(localStorage.getItem("token"))
+    if (!currentLoginUser.role.rights.includes(item.key)) {
+      // console.log("Current User don't includes ", item.key);
       return null
     }
 
@@ -66,7 +73,7 @@ function SideMenu(props) {
 
     let keys = []
     let tmp = ""
-    paths.map((path) => {
+    paths.forEach((path) => {
       if (path !== "") {
         tmp = tmp + "/" + path
         keys.push(tmp)
