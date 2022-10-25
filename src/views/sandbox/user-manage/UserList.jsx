@@ -84,12 +84,10 @@ export default function UserList() {
     const target = `http://localhost:5001/users?_expand=role`
 
     const currentLoginUser = JSON.parse(localStorage.getItem("token"))
-    console.log(currentLoginUser);
     const { region, roleId } = currentLoginUser
 
     axios.get(target).then(
       (resp) => {
-        console.log(resp.data);
 
         // 过滤用户
         const users = resp.data.filter(
