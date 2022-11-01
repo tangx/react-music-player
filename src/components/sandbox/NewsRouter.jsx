@@ -1,6 +1,8 @@
 import React from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Router, Switch } from 'react-router-dom'
 
 // views
 import Home from '../../views/sandbox/home/Home'
@@ -33,18 +35,36 @@ const LocalRouterMap = {
 }
 
 export default function NewsRouter() {
+  const [backRouteList, setBackRouteList] = useState([])
+  useEffect(() => {
+
+    Promise.all([
+      axios.get("http://localhost:5001/rights"),
+      axios.get("http://localhost:5001/children"),
+    ]).then(
+      (resp) => {
+        const data = [...resp[0].data, ...resp[1].data]
+        // console.log(data);
+        setBackRouteList(data)
+      }
+    )
+
+  }, [])
   return (
     <Switch>
-      <Route path="/home" component={Home} exact></Route>
-      <Route path="/user-manage/list" component={UserList}></Route>
-      <Route path="/right-manage/right/list" component={RightList}></Route>
-      <Route path="/right-manage/role/list" component={RoleList}></Route>
+      {
+        backRouteList.map((item) => {
+          return <Route path={item.key} key={item.key} component={LocalRouterMap[item.key]} exact></Route>
+        })
+      }
 
       {/* 首页重定向, 精确匹配*/}
-      <Redirect from="/" to="/home" exact />
+      < Redirect from="/" to="/home" exact />
 
       {/* 默认路由， 无权限 */}
-      <Route path="*" component={NoPermission}></Route>
-    </Switch>
+      {
+        backRouteList.length > 0 && <Route path="*" component={NoPermission}></Route>
+      }
+    </Switch >
   )
 }
